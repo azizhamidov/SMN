@@ -16,7 +16,7 @@ const herImages = [her1, her2, her3, her4, her5, her6, her7, her8];
 export default function App() {
   const [open, setOpen] = useState(false);
 
-  // Generate random float across the screen
+  // Random motion for floating images
   const randomMotion = () => ({
     x: [
       Math.random() * window.innerWidth - window.innerWidth / 2,
@@ -72,22 +72,25 @@ export default function App() {
         </motion.div>
       ))}
 
-      {/* 3D Envelope */}
+      {/* Envelope container */}
       <div
         className="relative w-64 h-40 cursor-pointer"
-        onClick={() => setOpen(true)}
         style={{ perspective: "1000px" }}
+        onClick={() => setOpen(true)}
       >
-        {/* Flap */}
-        <motion.div
-          className="absolute top-0 left-0 w-full h-20 bg-pink-400 origin-top shadow-lg z-20"
+        {/* Envelope flap using SVG triangle */}
+        <motion.svg
+          viewBox="0 0 200 80"
+          className="absolute top-0 left-0 w-full h-20 z-20"
+          style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
           animate={open ? { rotateX: -180 } : { rotateX: 0 }}
           transition={{ duration: 1 }}
-          style={{ transformStyle: "preserve-3d" }}
-        />
+        >
+          <polygon points="0,80 100,0 200,80" fill="#ec4899" stroke="#db2777" strokeWidth="2" />
+        </motion.svg>
 
-        {/* Body */}
-        <div className="relative w-full h-full bg-pink-300 rounded-b-xl shadow-xl border-2 border-pink-400 flex items-center justify-center z-10">
+        {/* Envelope body */}
+        <div className="absolute top-0 left-0 w-full h-full bg-pink-300 rounded-b-xl shadow-xl border-2 border-pink-400 flex items-center justify-center z-10">
           {!open && (
             <span className="absolute text-white font-bold text-lg md:text-xl">
               For My Samina
