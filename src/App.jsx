@@ -1,14 +1,25 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaHeart, FaStar } from "react-icons/fa";
-import HerImage from "./assets/sm.jpg";
+
+// Import her 8 images
+import her1 from "./assets/sm.jpg";
+import her2 from "./assets/sm2.jpg";
+import her3 from "./assets/sm3.jpg";
+import her4 from "./assets/sm4.jpg";
+import her5 from "./assets/sm5.jpg";
+import her6 from "./assets/sm6.jpg";
+import her7 from "./assets/sm7.jpg";
+import her8 from "./assets/sm8.jpg";
+
+const herImages = [her1, her2, her3, her4, her5, her6, her7, her8];
 
 export default function App() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-pink-100 via-purple-200 to-white overflow-hidden">
 
-      {/* Floating hearts and stars */}
-      {[...Array(6)].map((_, i) => (
+      {/* Floating hearts */}
+      {[...Array(8)].map((_, i) => (
         <motion.div
           key={`heart-${i}`}
           className="absolute text-pink-400 text-2xl md:text-3xl"
@@ -31,6 +42,7 @@ export default function App() {
         </motion.div>
       ))}
 
+      {/* Floating stars */}
       {[...Array(6)].map((_, i) => (
         <motion.div
           key={`star-${i}`}
@@ -53,7 +65,7 @@ export default function App() {
         </motion.div>
       ))}
 
-      {/* Main heading */}
+      {/* Heading */}
       <motion.h1
         className="text-center mt-20 md:mt-32 text-5xl md:text-7xl font-extrabold text-pink-600 drop-shadow-lg"
         initial={{ opacity: 0, scale: 0.5 }}
@@ -73,7 +85,7 @@ export default function App() {
         I made this little magical page just for you ✨
       </motion.p>
 
-      {/* Her picture with bounce effect */}
+      {/* Main picture */}
       <motion.div
         className="flex justify-center mt-10"
         initial={{ opacity: 0, scale: 0.8 }}
@@ -81,14 +93,14 @@ export default function App() {
         transition={{ delay: 1.5, duration: 1.5 }}
       >
         <motion.img
-          src={HerImage}
+          src={her1}
           alt="Her"
           className="w-64 h-64 md:w-96 md:h-96 rounded-full object-cover shadow-2xl border-4 border-pink-300 hover:scale-105 transition-transform duration-500"
           whileHover={{ rotate: 5, scale: 1.1 }}
         />
       </motion.div>
 
-      {/* Floating hearts around image */}
+      {/* Floating hearts around main image */}
       {[...Array(4)].map((_, i) => (
         <motion.div
           key={`heart-around-${i}`}
@@ -104,7 +116,7 @@ export default function App() {
         </motion.div>
       ))}
 
-      {/* Sliding letter section */}
+      {/* Sliding personal letter */}
       <motion.div
         className="max-w-3xl mx-auto mt-20 p-6 bg-white rounded-3xl shadow-2xl border-2 border-pink-200"
         initial={{ x: "-100%", opacity: 0 }}
@@ -120,6 +132,34 @@ export default function App() {
         </p>
       </motion.div>
 
+      {/* Image gallery of 8 images */}
+      <motion.div
+        className="max-w-6xl mx-auto mt-16 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.3 } },
+        }}
+      >
+        {herImages.map((img, index) => (
+          <motion.div
+            key={index}
+            className="overflow-hidden rounded-2xl shadow-xl border-4 border-pink-200"
+            whileHover={{ scale: 1.05, rotate: 1 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <img
+              src={img}
+              alt={`Her ${index + 1}`}
+              className="w-full h-64 object-cover"
+            />
+          </motion.div>
+        ))}
+      </motion.div>
+
       {/* Footer */}
       <motion.footer
         className="text-center mt-16 text-gray-500 mb-8"
@@ -129,6 +169,7 @@ export default function App() {
       >
         Made with ❤️ for you
       </motion.footer>
+
     </div>
   );
 }
