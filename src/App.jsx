@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaHeart, FaStar } from "react-icons/fa";
 
@@ -10,13 +10,11 @@ import her5 from "./assets/sm5.jpg";
 import her6 from "./assets/sm6.jpg";
 import her7 from "./assets/sm7.jpg";
 import her8 from "./assets/sm8.jpg";
-import music from "./assets/music.mp3"; // Add your audio file here
 
 const herImages = [her1, her2, her3, her4, her5, her6, her7, her8];
 
 export default function App() {
   const [open, setOpen] = useState(false);
-  const audioRef = useRef(null); // Reference to control audio element
 
   // Random motion for floating images
   const randomMotion = () => ({
@@ -39,26 +37,8 @@ export default function App() {
     },
   });
 
-  // Play or pause audio based on open state
-  useEffect(() => {
-    if (audioRef.current) {
-      if (open) {
-        audioRef.current.play().catch((error) => {
-          console.error("Audio playback failed:", error);
-        });
-      } else {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0; // Reset to start when paused
-      }
-    }
-  }, [open]);
-
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-pink-100 via-purple-200 to-white overflow-hidden perspective-1000">
-      {/* Audio element */}
-      <audio ref={audioRef} src={music} loop>
-        Your browser does not support the audio element.
-      </audio>
 
       {/* Floating hearts */}
       {[...Array(6)].map((_, i) => (
@@ -96,7 +76,7 @@ export default function App() {
       <div
         className="relative w-64 h-40 cursor-pointer"
         style={{ perspective: "1000px" }}
-        onClick={() => setOpen(!open)} // Toggle open state
+        onClick={() => setOpen(true)}
       >
         {/* Envelope flap using SVG triangle */}
         <motion.svg
@@ -106,31 +86,7 @@ export default function App() {
           animate={open ? { rotateX: -180 } : { rotateX: 0 }}
           transition={{ duration: 1 }}
         >
-          <defs>
-            <linearGradient id="flapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style={{ stopColor: "#f9a8d4", stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: "#ec4899", stopOpacity: 1 }} />
-            </linearGradient>
-            <filter id="flapShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-              <feOffset dx="2" dy="2" result="offsetblur" />
-              <feComponentTransfer>
-                <feFuncA type="linear" slope="0.5" />
-              </feComponentTransfer>
-              <feMerge>
-                <feMergeNode />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          <polygon
-            points="0,0 200,0 100,80"
-            fill="url(#flapGradient)"
-            stroke="#db2777"
-            strokeWidth="2"
-            filter="url(#flapShadow)"
-            style={{ transform: open ? "translateZ(-10px)" : "translateZ(10px)" }}
-          />
+          <polygon points="0,0 200,0 100,40" fill="#ec4899" stroke="#db2777" strokeWidth="2" />
         </motion.svg>
 
         {/* Envelope body */}
