@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { FaHeart, FaStar } from "react-icons/fa";
 import her1 from "./assets/sm.jpg";
 import her2 from "./assets/sm2.jpg";
 import her3 from "./assets/sm3.jpg";
@@ -14,19 +15,65 @@ const herImages = [her1, her2, her3, her4, her5, her6, her7, her8];
 export default function App() {
   const [open, setOpen] = useState(false);
 
-  // Function to generate random floating positions
-  const randomPosition = () => ({
-    x: Math.random() * 400 - 200,
-    y: Math.random() * -300 - 50,
-    rotate: Math.random() * 60 - 30,
+  // Generate random float keyframes
+  const randomFloat = () => ({
+    x: [
+      Math.random() * 300 - 150,
+      Math.random() * 300 - 150,
+      Math.random() * 300 - 150,
+    ],
+    y: [
+      Math.random() * -200 - 50,
+      Math.random() * -300 - 50,
+      Math.random() * -250 - 50,
+    ],
+    rotate: [0, Math.random() * 60 - 30, Math.random() * 40 - 20],
+    transition: {
+      repeat: Infinity,
+      repeatType: "mirror",
+      duration: 6 + Math.random() * 4,
+      ease: "easeInOut",
+    },
   });
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-pink-100 via-purple-200 to-white overflow-hidden">
 
-      {/* Envelope container */}
+      {/* Floating hearts */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={`heart-${i}`}
+          className="absolute text-pink-400 text-2xl md:text-3xl"
+          style={{
+            top: Math.random() * window.innerHeight,
+            left: Math.random() * window.innerWidth,
+          }}
+          animate={{ y: [0, -20, 0], rotate: [0, 360, 0] }}
+          transition={{ repeat: Infinity, duration: 4 + i, ease: "easeInOut" }}
+        >
+          <FaHeart />
+        </motion.div>
+      ))}
+
+      {/* Floating stars */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={`star-${i}`}
+          className="absolute text-yellow-300 text-xl md:text-2xl"
+          style={{
+            top: Math.random() * window.innerHeight,
+            left: Math.random() * window.innerWidth,
+          }}
+          animate={{ y: [0, -20, 0], rotate: [0, 360, 0] }}
+          transition={{ repeat: Infinity, duration: 6 + i, ease: "easeInOut" }}
+        >
+          <FaStar />
+        </motion.div>
+      ))}
+
+      {/* Envelope */}
       <div className="relative w-64 cursor-pointer" onClick={() => setOpen(true)}>
-        {/* Envelope flap */}
+        {/* Flap */}
         <motion.div
           className="absolute top-0 left-0 w-0 h-0 border-l-32 border-l-transparent border-r-32 border-r-transparent border-b-20 border-b-pink-400"
           animate={open ? { rotateX: -180 } : { rotateX: 0 }}
@@ -34,7 +81,7 @@ export default function App() {
           style={{ transformOrigin: "top center" }}
         />
 
-        {/* Envelope body */}
+        {/* Body */}
         <div className="relative w-full h-40 bg-pink-300 rounded-b-xl shadow-xl border-2 border-pink-400 flex items-center justify-center">
           {!open && (
             <span className="absolute text-white font-bold text-lg md:text-xl">
@@ -44,10 +91,9 @@ export default function App() {
         </div>
       </div>
 
-      {/* Floating images animation */}
-      {open && herImages.map((img, index) => {
-        const { x, y, rotate } = randomPosition();
-        return (
+      {/* Images flying out and floating continuously */}
+      {open &&
+        herImages.map((img, index) => (
           <motion.img
             key={index}
             src={img}
@@ -57,25 +103,16 @@ export default function App() {
             animate={{
               scale: 1,
               opacity: 1,
-              x,
-              y,
-              rotate,
-              transition: {
-                delay: 0.2 * index,
-                duration: 1.5,
-                type: "spring",
-                stiffness: 100,
-              },
+              ...randomFloat(),
             }}
+            transition={{ delay: 0.2 * index }}
             whileHover={{
               scale: 1.1,
-              y: y - 10,
-              rotate: rotate + 10,
+              rotate: [0, 10, -10, 0],
               transition: { duration: 0.5 },
             }}
           />
-        );
-      })}
+        ))}
     </div>
   );
 }
