@@ -86,7 +86,7 @@ export default function App() {
           animate={open ? { rotateX: -180 } : { rotateX: 0 }}
           transition={{ duration: 1 }}
         >
-          <polygon points="0,80 100,0 200,80" fill="#ec4899" stroke="#db2777" strokeWidth="2" />
+          <polygon points="0,0 200,0 100,40" fill="#ec4899" stroke="#db2777" strokeWidth="2" />
         </motion.svg>
 
         {/* Envelope body */}
