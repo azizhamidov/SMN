@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaHeart, FaStar } from "react-icons/fa";
+
 import her1 from "./assets/sm.jpg";
 import her2 from "./assets/sm2.jpg";
 import her3 from "./assets/sm3.jpg";
@@ -15,23 +16,19 @@ const herImages = [her1, her2, her3, her4, her5, her6, her7, her8];
 export default function App() {
   const [open, setOpen] = useState(false);
 
-  // Generate random float keyframes
-  const randomFloat = () => ({
-    x: [
-      Math.random() * 300 - 150,
-      Math.random() * 300 - 150,
-      Math.random() * 300 - 150,
-    ],
-    y: [
-      Math.random() * -200 - 50,
-      Math.random() * -300 - 50,
-      Math.random() * -250 - 50,
-    ],
+  // Function to generate random floating positions across screen
+  const randomMotion = () => ({
+    x: [Math.random() * window.innerWidth - window.innerWidth / 2,
+        Math.random() * window.innerWidth - window.innerWidth / 2,
+        Math.random() * window.innerWidth - window.innerWidth / 2],
+    y: [Math.random() * window.innerHeight - window.innerHeight / 2,
+        Math.random() * window.innerHeight - window.innerHeight / 2,
+        Math.random() * window.innerHeight - window.innerHeight / 2],
     rotate: [0, Math.random() * 60 - 30, Math.random() * 40 - 20],
     transition: {
       repeat: Infinity,
       repeatType: "mirror",
-      duration: 6 + Math.random() * 4,
+      duration: 8 + Math.random() * 4,
       ease: "easeInOut",
     },
   });
@@ -44,10 +41,7 @@ export default function App() {
         <motion.div
           key={`heart-${i}`}
           className="absolute text-pink-400 text-2xl md:text-3xl"
-          style={{
-            top: Math.random() * window.innerHeight,
-            left: Math.random() * window.innerWidth,
-          }}
+          style={{ top: Math.random() * window.innerHeight, left: Math.random() * window.innerWidth }}
           animate={{ y: [0, -20, 0], rotate: [0, 360, 0] }}
           transition={{ repeat: Infinity, duration: 4 + i, ease: "easeInOut" }}
         >
@@ -60,10 +54,7 @@ export default function App() {
         <motion.div
           key={`star-${i}`}
           className="absolute text-yellow-300 text-xl md:text-2xl"
-          style={{
-            top: Math.random() * window.innerHeight,
-            left: Math.random() * window.innerWidth,
-          }}
+          style={{ top: Math.random() * window.innerHeight, left: Math.random() * window.innerWidth }}
           animate={{ y: [0, -20, 0], rotate: [0, 360, 0] }}
           transition={{ repeat: Infinity, duration: 6 + i, ease: "easeInOut" }}
         >
@@ -81,7 +72,7 @@ export default function App() {
           style={{ transformOrigin: "top center" }}
         />
 
-        {/* Body */}
+        {/* Envelope body */}
         <div className="relative w-full h-40 bg-pink-300 rounded-b-xl shadow-xl border-2 border-pink-400 flex items-center justify-center">
           {!open && (
             <span className="absolute text-white font-bold text-lg md:text-xl">
@@ -91,28 +82,27 @@ export default function App() {
         </div>
       </div>
 
-      {/* Images flying out and floating continuously */}
-      {open &&
-        herImages.map((img, index) => (
-          <motion.img
-            key={index}
-            src={img}
-            alt={`Her ${index + 1}`}
-            className="w-32 h-32 md:w-48 md:h-48 rounded-2xl shadow-xl border-2 border-pink-300 object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{
-              scale: 1,
-              opacity: 1,
-              ...randomFloat(),
-            }}
-            transition={{ delay: 0.2 * index }}
-            whileHover={{
-              scale: 1.1,
-              rotate: [0, 10, -10, 0],
-              transition: { duration: 0.5 },
-            }}
-          />
-        ))}
+      {/* Images floating across entire screen */}
+      {open && herImages.map((img, index) => (
+        <motion.img
+          key={index}
+          src={img}
+          alt={`Her ${index + 1}`}
+          className="w-32 h-32 md:w-48 md:h-48 rounded-2xl shadow-xl border-2 border-pink-300 object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{
+            scale: 1,
+            opacity: 1,
+            ...randomMotion(),
+          }}
+          transition={{ delay: 0.2 * index }}
+          whileHover={{
+            scale: 1.1,
+            rotate: [0, 10, -10, 0],
+            transition: { duration: 0.5 },
+          }}
+        />
+      ))}
     </div>
   );
 }
