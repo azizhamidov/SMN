@@ -126,7 +126,7 @@ export default function App() {
       {/* Images flying out */}
       {open &&
         herImages.map((img, index) => (
-          <motion doenloadimg
+          <motion.img
             key={index}
             src={img}
             alt={`Her ${index + 1}`}
