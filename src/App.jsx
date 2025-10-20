@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { FaHeart, FaStar } from "react-icons/fa";
 
@@ -10,11 +10,13 @@ import her5 from "./assets/sm5.jpg";
 import her6 from "./assets/sm6.jpg";
 import her7 from "./assets/sm7.jpg";
 import her8 from "./assets/sm8.jpg";
+import music from "./assets/music.mp3"; // Add your audio file here
 
 const herImages = [her1, her2, her3, her4, her5, her6, her7, her8];
 
 export default function App() {
   const [open, setOpen] = useState(false);
+  const audioRef = useRef(null); // Reference to control audio element
 
   // Random motion for floating images
   const randomMotion = () => ({
@@ -37,8 +39,26 @@ export default function App() {
     },
   });
 
+  // Play or pause audio based on open state
+  useEffect(() => {
+    if (audioRef.current) {
+      if (open) {
+        audioRef.current.play().catch((error) => {
+          console.error("Audio playback failed:", error);
+        });
+      } else {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0; // Reset to start when paused
+      }
+    }
+  }, [open]);
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-pink-100 via-purple-200 to-white overflow-hidden perspective-1000">
+      {/* Audio element */}
+      <audio ref={audioRef} src={music} loop>
+        Your browser does not support the audio element.
+      </audio>
 
       {/* Floating hearts */}
       {[...Array(6)].map((_, i) => (
@@ -76,7 +96,7 @@ export default function App() {
       <div
         className="relative w-64 h-40 cursor-pointer"
         style={{ perspective: "1000px" }}
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen(!open)} // Toggle open state
       >
         {/* Envelope flap using SVG triangle */}
         <motion.svg
