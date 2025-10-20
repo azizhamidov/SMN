@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaHeart, FaStar } from "react-icons/fa";
 
-// Import your 8 images here
 import her1 from "./assets/sm.jpg";
 import her2 from "./assets/sm2.jpg";
 import her3 from "./assets/sm3.jpg";
@@ -17,17 +16,17 @@ const herImages = [her1, her2, her3, her4, her5, her6, her7, her8];
 export default function App() {
   const [open, setOpen] = useState(false);
 
-  // Function to generate random motion across the screen
+  // Generate random float across the screen
   const randomMotion = () => ({
     x: [
-      Math.random() * 800 - 400,
-      Math.random() * 800 - 400,
-      Math.random() * 800 - 400,
+      Math.random() * window.innerWidth - window.innerWidth / 2,
+      Math.random() * window.innerWidth - window.innerWidth / 2,
+      Math.random() * window.innerWidth - window.innerWidth / 2,
     ],
     y: [
-      Math.random() * 600 - 300,
-      Math.random() * 600 - 300,
-      Math.random() * 600 - 300,
+      Math.random() * window.innerHeight - window.innerHeight / 2,
+      Math.random() * window.innerHeight - window.innerHeight / 2,
+      Math.random() * window.innerHeight - window.innerHeight / 2,
     ],
     rotate: [0, Math.random() * 60 - 30, Math.random() * 40 - 20],
     transition: {
@@ -73,18 +72,22 @@ export default function App() {
         </motion.div>
       ))}
 
-      {/* Envelope */}
-      <div className="relative w-64 h-40 cursor-pointer" onClick={() => setOpen(true)}>
+      {/* 3D Envelope */}
+      <div
+        className="relative w-64 h-40 cursor-pointer"
+        onClick={() => setOpen(true)}
+        style={{ perspective: "1000px" }}
+      >
         {/* Flap */}
         <motion.div
-          className="absolute top-0 left-0 w-0 h-0 border-l-32 border-l-transparent border-r-32 border-r-transparent border-b-20 border-b-pink-400 shadow-lg"
+          className="absolute top-0 left-0 w-full h-20 bg-pink-400 origin-top shadow-lg z-20"
           animate={open ? { rotateX: -180 } : { rotateX: 0 }}
           transition={{ duration: 1 }}
-          style={{ transformOrigin: "top center" }}
+          style={{ transformStyle: "preserve-3d" }}
         />
 
-        {/* Envelope body */}
-        <div className="relative w-full h-full bg-pink-300 rounded-b-xl shadow-xl border-2 border-pink-400 flex items-center justify-center">
+        {/* Body */}
+        <div className="relative w-full h-full bg-pink-300 rounded-b-xl shadow-xl border-2 border-pink-400 flex items-center justify-center z-10">
           {!open && (
             <span className="absolute text-white font-bold text-lg md:text-xl">
               For My Samina
@@ -93,7 +96,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* Images floating across screen */}
+      {/* Images flying out */}
       {open &&
         herImages.map((img, index) => (
           <motion.img
