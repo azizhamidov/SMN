@@ -104,7 +104,7 @@ export default function App() {
             </filter>
           </defs>
           <polygon
-            points="0,80 100,0 200,80"
+            points="0,0 200,0 100,80"
             fill="url(#flapGradient)"
             stroke="#db2777"
             strokeWidth="2"
