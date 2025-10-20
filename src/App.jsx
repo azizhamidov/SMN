@@ -104,7 +104,7 @@ export default function App() {
             </filter>
           </defs>
           <polygon
-            points="0,0 0,40 100,40 200,40 200,0"
+            points="0,0 200,0 100,40"
             fill="url(#flapGradient)"
             stroke="#db2777"
             strokeWidth="2"
@@ -126,7 +126,7 @@ export default function App() {
       {/* Images flying out */}
       {open &&
         herImages.map((img, index) => (
-          <motion.img
+          <motion doenloadimg
             key={index}
             src={img}
             alt={`Her ${index + 1}`}
