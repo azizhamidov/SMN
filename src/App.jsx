@@ -86,7 +86,31 @@ export default function App() {
           animate={open ? { rotateX: -180 } : { rotateX: 0 }}
           transition={{ duration: 1 }}
         >
-          <polygon points="0,0 200,0 100,40" fill="#ec4899" stroke="#db2777" strokeWidth="2" />
+          <defs>
+            <linearGradient id="flapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style={{ stopColor: "#f9a8d4", stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: "#ec4899", stopOpacity: 1 }} />
+            </linearGradient>
+            <filter id="flapShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+              <feOffset dx="2" dy="2" result="offsetblur" />
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.5" />
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <polygon
+            points="0,0 200,0 100,80"
+            fill="url(#flapGradient)"
+            stroke="#db2777"
+            strokeWidth="2"
+            filter="url(#flapShadow)"
+            style={{ transform: open ? "translateZ(-10px)" : "translateZ(10px)" }}
+          />
         </motion.svg>
 
         {/* Envelope body */}
