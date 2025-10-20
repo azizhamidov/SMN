@@ -3,8 +3,12 @@ export default {
     "./index.html",
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
-  theme: {
-    extend: {},
+theme: {
+  extend: {
+    perspective: {
+      1000: '1000px',
+    },
   },
+},
   plugins: [],
 }
